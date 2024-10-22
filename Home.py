@@ -11,7 +11,7 @@ st.markdown('''
 ''')
 
 con = sqlite3.connect(DATABASE_FILE)
-asset_prices = pd.read_sql_query('select * from asset_prices', con)
+asset_prices = pd.read_sql_query('select isin, date, amount, price from asset_prices', con)
 asset_prices['amount'] = asset_prices['amount'].astype(int)
 asset_prices['total'] = asset_prices['price'] * asset_prices['amount']
 latest_date = sorted(list(asset_prices['date'].values), reverse=True)[0]

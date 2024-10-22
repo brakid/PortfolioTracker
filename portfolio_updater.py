@@ -41,7 +41,7 @@ def validate(con, portfolio):
 if __name__ == '__main__':
     con = sqlite3.connect(DATABASE_FILE)
     cur = con.cursor()
-    cur.execute('CREATE TABLE IF NOT EXISTS asset_prices(isin varchar(255), date varchar(255), price float, amount int)')
+    cur.execute('CREATE TABLE IF NOT EXISTS asset_prices(isin varchar(255), date varchar(255), price float, amount int, UNIQUE(isin, date))')
     con.commit()
 
     portfolio = pd.read_csv(PORTFOLIO_FILE, sep=';')
