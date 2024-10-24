@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 	"sync"
 )
 
@@ -17,7 +18,14 @@ func processAsset(portfolioAsset PortfolioAsset, wg *sync.WaitGroup, pChan chan 
 }
 
 func main() {
-	portfolio, err := ReadPortfolioAssets("../portfolio.csv")
+	argsWithoutProg := os.Args[1:]
+	if len(argsWithoutProg) != 2 {
+		log.Fatalf("Expecting arguments: <portfolio CSV file> <portfolio prices DB file>")
+	}
+	portfolioCsvFile := argsWithoutProg[0]
+	portfolioDbFile := argsWithoutProg[1]
+
+	portfolio, err := ReadPortfolioAssets(portfolioCsvFile)
 	if err != nil {
 		log.Fatalf("Error while reading Portfolio file: %v", err)
 	}
@@ -52,7 +60,7 @@ func main() {
 		i += 1
 	}
 
-	err = Store(portfolioRecords, "portfolio.db")
+	err = Store(portfolioRecords, portfolioDbFile)
 	if err != nil {
 		log.Fatalf("Error while storing Portfolio records: %v", err)
 	}
