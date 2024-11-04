@@ -25,7 +25,7 @@ def validate_row(isin, name, amount):
     else:
         return (True, None)
                                     
-def save(edited_df):
+def save(edited_df, file):
     validation_errors = []
     for index, row in edited_df.iterrows():
         valid, error = validate_row(row['isin'], row['name'], row['amount'])
@@ -37,11 +37,11 @@ def save(edited_df):
             { chr(10).join([ f'* Line {i}: {error}' for i, error in validation_errors]) }
         ''')
     else:
-        edited_df.to_csv(PORTFOLIO_FILE, index=False, sep=';')
-        st.info('Portfolio updated')
+        edited_df.to_csv(file, index=False, sep=';')
+        st.info(f'Portfolio {file} updated')
 
 if st.button('Save'):
-    save(edited_df.rename(columns=PORTFOLIO_FILE_COLUMN_MAPPING)[['isin', 'name', 'amount']])
+    save(edited_df.rename(columns=PORTFOLIO_FILE_COLUMN_MAPPING)[['isin', 'name', 'amount']], PORTFOLIO_FILE)
 
 reference_df = pd.read_csv(REFERENCE_FILE, sep=';')
 reference_df = reference_df.sort_values('name', ascending=True).reset_index()
@@ -49,4 +49,4 @@ reference_df = reference_df.sort_values('name', ascending=True).reset_index()
 edited_reference_df = st.data_editor(reference_df[['isin', 'name', 'amount']].rename(columns=PORTFOLIO_UI_COLUMN_MAPPING), disabled=['ISIN', 'Name'], num_rows='fixed', use_container_width=True, hide_index=True)
 
 if st.button('Save', key='reference'):
-    save(edited_reference_df.rename(columns=PORTFOLIO_FILE_COLUMN_MAPPING)[['isin', 'name', 'amount']])
+    save(edited_reference_df.rename(columns=PORTFOLIO_FILE_COLUMN_MAPPING)[['isin', 'name', 'amount']], REFERENCE_FILE)
