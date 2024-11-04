@@ -53,10 +53,10 @@ else:
     chart_asset_prices = asset_prices[asset_prices['isin'] == asset_mapping[option]][['date', 'total']].groupby('date').sum('total')
     asset_price = asset_prices[asset_prices['isin'] == asset_mapping[option]][asset_prices['date'] == latest_date]['total'].sum()
 st.write(f'''
-Asset Value: {asset_price:.2f} €
+Asset Value: {asset_price:.2f}€
 ''')
 if option not in asset_mapping:
     st.html(f'''
-    <p>Reference Portfolio Value: {reference_price:.2f} € <span style="color:{'red' if (reference_price - asset_price) > 0 else 'green'}">{(asset_price - reference_price):+.2f} €</span></p>
+    <p>Reference Portfolio Value: {reference_price:.2f}€, difference: <span style="color:{'red' if (reference_price - asset_price) > 0 else 'green'}">{(asset_price - reference_price):+.2f}€</span></p>
     ''')
 st.line_chart(data=chart_asset_prices.rename(columns=PORTFOLIO_UI_COLUMN_MAPPING), use_container_width=True)
