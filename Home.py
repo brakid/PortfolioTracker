@@ -20,8 +20,9 @@ reference_prices = pd.read_sql_query('select isin, date, amount, price from refe
 reference_prices['amount'] = reference_prices['amount'].astype(int)
 reference_prices['total_reference'] = reference_prices['price'] * reference_prices['amount']
 
-st.markdown('''
+st.markdown(f'''
 ## Portfolio Assets
+Date: {latest_date}
 ''')
 latest_value = asset_prices[asset_prices['date'] == latest_date]
 portfolio_value = pd.merge(portfolio, latest_value[['isin', 'amount', 'price', 'total']], left_on='isin', right_on='isin')
