@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from utils import PORTFOLIO_FILE, PORTFOLIO_UI_COLUMN_MAPPING, PORTFOLIO_FILE_COLUMN_MAPPING
+from utils import PORTFOLIO_FILE, REFERENCE_FILE, PORTFOLIO_UI_COLUMN_MAPPING, PORTFOLIO_FILE_COLUMN_MAPPING
 import re
 
 isin_regex = '^[A-Z]{2}[0-9A-Z]{9}[0-9]{1}$'
@@ -42,3 +42,11 @@ def save(edited_df):
 
 if st.button('Save'):
     save(edited_df.rename(columns=PORTFOLIO_FILE_COLUMN_MAPPING)[['isin', 'name', 'amount']])
+
+reference_df = pd.read_csv(REFERENCE_FILE, sep=';')
+reference_df = reference_df.sort_values('name', ascending=True).reset_index()
+
+edited_reference_df = st.data_editor(reference_df[['isin', 'name', 'amount']].rename(columns=PORTFOLIO_UI_COLUMN_MAPPING), disabled=['ISIN', 'Name'], num_rows='fixed', use_container_width=True, hide_index=True)
+
+if st.button('Save', key='reference'):
+    save(edited_reference_df.rename(columns=PORTFOLIO_FILE_COLUMN_MAPPING)[['isin', 'name', 'amount']])

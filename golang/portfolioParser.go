@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"fmt"
 	"log"
+	"math"
 	"os"
 	"strconv"
 )
@@ -31,10 +32,11 @@ func ReadPortfolioAssets(file string) ([]PortfolioAsset, error) {
 	for index, record := range records {
 		isin := record[0]
 		name := record[1]
-		amountRaw, err := strconv.Atoi(record[2])
+		amountRaw, err := strconv.ParseFloat(record[2], 64)
 		if err != nil {
 			return nil, err
 		}
+		amountRaw = math.Round(amountRaw)
 		amount := uint(amountRaw)
 		portfolioPosition := PortfolioAsset{Isin: isin, Name: name, Amount: amount}
 		portfolio[index] = portfolioPosition

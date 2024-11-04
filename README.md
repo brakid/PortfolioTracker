@@ -33,6 +33,14 @@ In order to get the Golang binary for my [NVIDIA Jetson Nano](https://developer.
 ```
 docker run -it --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp golang:1.23 /bin/sh
 
-apt-get update & apt-get install gcc-aarch64-linux-gnu 
+apt-get update && apt-get install gcc-aarch64-linux-gnu 
 env CC=aarch64-linux-gnu-gcc GOOS=linux GOARCH=arm64 CGO_ENABLED=1 go build -ldflags="-extldflags=-static" -o dist/portfolioUpdater 
 ```
+
+### Adding a comparison to a reference index
+1. add a new file containing the reference (stock vs ETF - everything that has a ISIN)
+ * initialize with how many units you would own if you convert you portfolio fully into that asset (100k€ total portfolio value, reference stock/ETF has a price of 33€ = ~3030 units)
+ * every time you contribute to your portfolio: add the number of units of the reference assert you could have bought for the same price (monthly investment: 1000€, at an asset price of 33.50€ = 29.85 = ~30 units (rounding is fine, assuming full units))
+ * TODO: allow easier adding of contributions: e.g just enter the amount, calculation of units is done automatically?
+2. pull the current price (similar to the daily reference updates)
+3. Display the performance of the reference portfolio vs the own portfolio

@@ -19,11 +19,12 @@ func processAsset(portfolioAsset PortfolioAsset, wg *sync.WaitGroup, pChan chan 
 
 func main() {
 	argsWithoutProg := os.Args[1:]
-	if len(argsWithoutProg) != 2 {
-		log.Fatalf("Expecting arguments: <portfolio CSV file> <portfolio prices DB file>")
+	if len(argsWithoutProg) != 3 {
+		log.Fatalf("Expecting arguments: <portfolio CSV file> <portfolio prices DB file> <price table name>")
 	}
 	portfolioCsvFile := argsWithoutProg[0]
 	portfolioDbFile := argsWithoutProg[1]
+	portfolioTableName := argsWithoutProg[2]
 
 	portfolio, err := ReadPortfolioAssets(portfolioCsvFile)
 	if err != nil {
@@ -60,7 +61,7 @@ func main() {
 		i += 1
 	}
 
-	err = Store(portfolioRecords, portfolioDbFile)
+	err = Store(portfolioRecords, portfolioDbFile, portfolioTableName)
 	if err != nil {
 		log.Fatalf("Error while storing Portfolio records: %v", err)
 	}

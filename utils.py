@@ -1,4 +1,5 @@
 PORTFOLIO_FILE = 'portfolio.csv'
+REFERENCE_FILE = 'portfolio_reference.csv'
 DATABASE_FILE = 'portfolio.db'
 
 PORTFOLIO_UI_COLUMN_MAPPING = {
@@ -6,7 +7,7 @@ PORTFOLIO_UI_COLUMN_MAPPING = {
     'name': 'Name',
     'amount': 'Amount',
     'price': 'Price per unit',
-    'total': 'Total Asset value'
+    'total': 'Total Asset value',
 }
 
 PORTFOLIO_FILE_COLUMN_MAPPING = { v: k for k, v in PORTFOLIO_UI_COLUMN_MAPPING.items() }
