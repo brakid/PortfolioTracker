@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from utils import PORTFOLIO_FILE, REFERENCE_FILE, DATABASE_FILE, PORTFOLIO_UI_COLUMN_MAPPING, PORTFOLIO_FILE_COLUMN_MAPPING
+from utils import PORTFOLIO_FILE, REFERENCE_FILE, DATABASE_FILE, PORTFOLIO_UI_COLUMN_MAPPING, PORTFOLIO_FILE_COLUMN_MAPPING, PORTFOLIO_UI_STYLE
 import re
 import sqlite3
 
@@ -56,7 +56,7 @@ if 'investment_amount' not in st.session_state:
 
 container = st.container()
 reference_prices['additional_amount'] = reference_prices['price'].apply(lambda price: int(round(st.session_state.investment_amount / price)))
-reference_df = pd.merge(reference_df, reference_prices[['isin', 'additional_amount']], on='isin')
+reference_df = pd.merge(reference_df, reference_prices[['isin', 'price', 'additional_amount']], on='isin')
 
 if st.button('Save', key='reference', disabled=(st.session_state.investment_amount == 0)):
     if st.session_state.investment_amount > 0:
@@ -65,5 +65,5 @@ if st.button('Save', key='reference', disabled=(st.session_state.investment_amou
         st.session_state.investment_amount = 0.0
         reference_df['additional_amount'] = 0
 
-container.number_input('Investment:', min_value=0.0, max_value=100000.0, key='investment_amount')
-container.dataframe(reference_df[['isin', 'name', 'amount', 'additional_amount']].rename(columns=PORTFOLIO_UI_COLUMN_MAPPING))
+container.number_input('Investment (in €):', min_value=0.0, max_value=100000.0, key='investment_amount')
+container.dataframe(reference_df[['isin', 'name', 'price', 'amount', 'additional_amount']].rename(columns=PORTFOLIO_UI_COLUMN_MAPPING).style.format(PORTFOLIO_UI_STYLE), use_container_width=True, hide_index=True)
