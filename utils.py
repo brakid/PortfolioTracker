@@ -6,6 +6,7 @@ PORTFOLIO_UI_COLUMN_MAPPING = {
     'isin': 'ISIN',
     'name': 'Name',
     'amount': 'Amount',
+    'additional_amount': 'Additional Amount',
     'price': 'Price per unit',
     'total': 'Total Asset Value',
     'total_reference': 'Reference Portfolio Value',
