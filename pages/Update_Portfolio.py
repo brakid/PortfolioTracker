@@ -28,6 +28,8 @@ def validate_row(isin, name, amount):
                                     
 def save(edited_df, file):
     validation_errors = []
+    if len(edited_df) == 0:
+        validation_errors.append((0, 'No records found'))
     for index, row in edited_df.iterrows():
         valid, error = validate_row(row['isin'], row['name'], row['amount'])
         if not valid:
